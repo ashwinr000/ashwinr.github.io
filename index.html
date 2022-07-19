@@ -13,7 +13,7 @@
             console.log(window.tronWeb);
             if(window.tronWeb && window.tronWeb.defaultAddress.base58){
                 //document.write("Yes, catch it:",window.tronWeb.defaultAddress.base58)
-                let contract = await tronWeb.contract().at("410d5a65c8ba668840dc1e7edfcd9445760dfb6dc8");
+                let contract = await window.tronWeb.contract().at("410d5a65c8ba668840dc1e7edfcd9445760dfb6dc8");
                 let result = await contract.posts(1).call();
                 document.write(result);
             }
