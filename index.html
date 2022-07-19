@@ -15,9 +15,18 @@
                 //document.write("Yes, catch it:",window.tronWeb.defaultAddress.base58)
                 let contract = await window.tronWeb.contract().at("41d7a328fcaf08b6186cd58087f2fdf2e8f6f0d124");
                 console.log(contract);
-                let result = await contract.posts(1).call({ _isConstant: true });
+                //let result = await contract.posts(1).call({ _isConstant: true });
+                //console.log(result);
+                //document.write(result);
+                const start = Date.now();
+                let result = await contract.addPost("Post from", "TronWeb + TronLink").send({
+                    feeLimit: 100000000,
+                    callValue: 0,
+                    shouldPollResponse: true
+                });
                 console.log(result);
-                document.write(result);
+                const end = Date.now();
+                console.log(`Time Taken to execute = ${(end - start)/1000} seconds`)
             }
         }
     </script>
