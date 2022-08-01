@@ -7,45 +7,27 @@
     <title>Document</title>
     </head>
     <body>
+        <button onclick="accessAccounts()">Connect</button>
         <h1>Welcome</h1>
         <script>
+
 
             window.addEventListener('load', () => {
                 let currentWeb3;
 
+
                 if (window.ethereum) {
                     //currentWeb3 = new Web3(window.ethereum);
                     console.log(window.ethereum);
-                    try {
+                    /*try {
                         // Request account access if needed
                         //window.ethereum.enable();
-                        window.ethereum
-                        .request({ method: 'eth_requestAccounts' })
-                        .then((accounts) => {
-                            if (accounts.length === 0) {
-                                // MetaMask is locked or the user has not connected any accounts
-                                console.log('Please connect to MetaMask.');
-                            } else if (accounts[0] !== currentAccount) {
-                                currentAccount = accounts[0];
-                                // Do any other work!
-                                console.log(currentAccount);
-                            }
-                        })
-                        .catch((err) => {
-                        if (err.code === 4001) {
-                            // EIP-1193 userRejectedRequest error
-                            // If this happens, the user rejected the connection request.
-                            console.log('Please connect to MetaMask.');
-                        } else {
-                            console.error(err);
-                        }
-                        });
                         // Accounts now exposed
                     //resolve(currentWeb3);
                     } catch (error) {
                         // User denied account access...
                         alert('Please allow access for the app to work');
-                    }
+                    }*/
                 } else if (window.web3) {
                     //window.web3 = new Web3(web3.currentProvider);
                     // Acccounts always exposed
@@ -54,6 +36,28 @@
                     console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
                 }
             });
+
+            function accessAccounts() {
+                window.ethereum
+                .request({ method: 'eth_requestAccounts' })
+                .then((accounts) => {
+                    if (accounts.length === 0) {
+                        // MetaMask is locked or the user has not connected any accounts
+                        console.log('Please connect to MetaMask.');
+                    } else {
+                        console.log(accounts);
+                    }
+                })
+                .catch((err) => {
+                    if (err.code === 4001) {
+                        // EIP-1193 userRejectedRequest error
+                        // If this happens, the user rejected the connection request.
+                        console.log('Please connect to MetaMask.');
+                    } else {
+                        console.error(err);
+                    }
+                });
+            }
         </script>
     </body>
 </html>
