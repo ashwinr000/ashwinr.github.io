@@ -7,28 +7,31 @@
     <title>Document</title>
     </head>
     <body>
-    <button onclick="gettronweb()">Can you get tronweb from tronlink?</button>
-    <script>
-        async function gettronweb(){
-            console.log(window.tronWeb);
-            if(window.tronWeb && window.tronWeb.defaultAddress.base58){
-                //document.write("Yes, catch it:",window.tronWeb.defaultAddress.base58)
-                let contract = await window.tronWeb.contract().at("41d7a328fcaf08b6186cd58087f2fdf2e8f6f0d124");
-                console.log(contract);
-                //let result = await contract.posts(1).call({ _isConstant: true });
-                //console.log(result);
-                //document.write(result);
-                const start = Date.now();
-                let result = await contract.addPost("Post from", "TronWeb + TronLink").send({
-                    feeLimit: 100000000,
-                    callValue: 0,
-                    shouldPollResponse: true
-                });
-                console.log(result);
-                const end = Date.now();
-                console.log(`Time Taken to execute = ${(end - start)/1000} seconds`)
-            }
-        }
-    </script>
+        <h1>Welcome</h1>
+        <script>
+
+            window.addEventListener('load', () => {
+                let currentWeb3;
+
+                if (window.ethereum) {
+                    currentWeb3 = new Web3(window.ethereum);
+                    try {
+                        // Request account access if needed
+                        window.ethereum.enable();
+                        // Acccounts now exposed
+                    resolve(currentWeb3);
+                    } catch (error) {
+                        // User denied account access...
+                        alert('Please allow access for the app to work');
+                    }
+                } else if (window.web3) {
+                    window.web3 = new Web3(web3.currentProvider);
+                    // Acccounts always exposed
+                    resolve(currentWeb3);
+                } else {
+                    console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+                }
+            });
+        </script>
     </body>
 </html>
