@@ -92,6 +92,13 @@
                 console.log(window.contract);
                 console.log(account);
 
+                let result = await window.contract.methods.verifyTx().send({
+                    proof: proof,
+                    input: inputs
+                });
+                console.log(result);
+
+
                 /*let result = await window.contract.methods.mint().send({ from: account });
                 console.info("== result: ", result)
                 if(result.status && result.transactionHash){
@@ -108,6 +115,34 @@
                     }
                 });
             }*/
+
+            // Inputs
+            let inputs = [
+                "0x000000000000000000000000000000000000000000000000000000000001bba1"
+            ];
+
+
+            // Proof
+            let proof = {
+                "a": [
+                    "0x1a3068710aa6577a0cb8dedf039ce6761ab7e03f45112d8958bad8b70680b29b",
+                    "0x1e29c27efe5675170787f8e5f4a2a8361e69eabd6a8c2cb4cc1f564b0ddbdb09"
+                ],
+                "b": [
+                    [
+                        "0x240905d2a726508a5917e4371ee261a4e13ad5f70005fbcec894d285ffec932f",
+                        "0x2a589009d0b9ddc45a56236e465daa93228d11b01ed439c4716c6cfc6adf9d1f"
+                    ],
+                    [
+                        "0x2630acfd05c7f3e18ed42605a1977ee4c896b6bcfbdcd9afa2fa2a803daf106c",
+                        "0x0c3a2b0d84d80f4d59773eb5715600e881f31080b8834ca4992369657810e93f"
+                    ]
+                ],
+                "c": [
+                    "0x0c805061012897357ac284d9a985aa8e9ae8bde7cece393640f0e3da14ca135a",
+                    "0x227321abe10eac1264abe59658bc8e0345f31c356e8fde756e63a1afd9beb382"
+                ]
+            }
 
             // Raw contract ABI
             let abi = [
