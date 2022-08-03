@@ -92,9 +92,9 @@
                 console.log(window.contract);
                 console.log(account);
 
-                let result = await window.contract.methods.verifyTx().send({
-                    proof: proof,
-                    input: inputs
+                let result = await window.contract.methods.verifyTx(proof, inputs).send({
+                    from: account,
+                    
                 });
                 console.log(result);
 
