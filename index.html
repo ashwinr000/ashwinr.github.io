@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
     <title>Document</title>
     </head>
     <body>
@@ -12,14 +13,15 @@
         <script>
 
 
-            window.addEventListener('load', () => {
-                let currentWeb3;
+            window.addEventListener('load', async () => {
+                
+                /*let currentWeb3;
 
 
                 if (window.ethereum) {
                     //currentWeb3 = new Web3(window.ethereum);
                     console.log(window.ethereum);
-                    /*try {
+                    try {
                         // Request account access if needed
                         //window.ethereum.enable();
                         // Accounts now exposed
@@ -27,17 +29,20 @@
                     } catch (error) {
                         // User denied account access...
                         alert('Please allow access for the app to work');
-                    }*/
+                    }
                 } else if (window.web3) {
                     //window.web3 = new Web3(web3.currentProvider);
                     // Acccounts always exposed
                     //resolve(currentWeb3);
                 } else {
                     console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-                }
+                }*/
+
+                await run();
+
             });
 
-            function accessAccounts() {
+            /*function accessAccounts() {
                 window.ethereum
                 .request({ method: 'eth_requestAccounts' })
                 .then((accounts) => {
@@ -57,7 +62,136 @@
                         console.error(err);
                     }
                 });
+            }*/
+
+            
+            async function loadWeb3() {
+                if (window.ethereum) {
+                    window.web3 = new Web3(window.ethereum);
+                    //window.ethereum.enable();
+                }
             }
+
+            async function loadContract() {
+                
+                //let abi = <%= raw @contract.abi %>
+                let address = "0xd9145CCE52D386f254917e481eB44e9943F39138";
+                return await new window.web3.eth.Contract(abi, address);
+            }
+                
+            async function getCurrentAccount() {
+                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                return accounts[0];
+            }
+
+            async function run() {
+                await loadWeb3();
+                window.contract = await loadContract();
+                const account = await getCurrentAccount();
+
+                console.log(window.contract);
+                console.log(account);
+
+                /*let result = await window.contract.methods.mint().send({ from: account });
+                console.info("== result: ", result)
+                if(result.status && result.transactionHash){
+                    location.href="/front_ends/mark_claim_done?contract_id=" + <%= params[:id] %> + "&tx=" + result.transactionHash
+                }*/
+            }
+
+            /*if(document.getElementById('do_claim_by_user')){
+                document.getElementById('do_claim_by_user').addEventListener('click', async () => {
+                    if (typeof window.ethereum !== 'undefined') {
+                        run()
+                    }else {
+                        alert('You have not installed a wallet(e.g. Metamask) yet, please install.')
+                    }
+                });
+            }*/
+
+            // Raw contract ABI
+            let abi = [
+                {
+                    "inputs": [
+                        {
+                            "components": [
+                                {
+                                    "components": [
+                                        {
+                                            "internalType": "uint256",
+                                            "name": "X",
+                                            "type": "uint256"
+                                        },
+                                        {
+                                            "internalType": "uint256",
+                                            "name": "Y",
+                                            "type": "uint256"
+                                        }
+                                    ],
+                                    "internalType": "struct Pairing.G1Point",
+                                    "name": "a",
+                                    "type": "tuple"
+                                },
+                                {
+                                    "components": [
+                                        {
+                                            "internalType": "uint256[2]",
+                                            "name": "X",
+                                            "type": "uint256[2]"
+                                        },
+                                        {
+                                            "internalType": "uint256[2]",
+                                            "name": "Y",
+                                            "type": "uint256[2]"
+                                        }
+                                    ],
+                                    "internalType": "struct Pairing.G2Point",
+                                    "name": "b",
+                                    "type": "tuple"
+                                },
+                                {
+                                    "components": [
+                                        {
+                                            "internalType": "uint256",
+                                            "name": "X",
+                                            "type": "uint256"
+                                        },
+                                        {
+                                            "internalType": "uint256",
+                                            "name": "Y",
+                                            "type": "uint256"
+                                        }
+                                    ],
+                                    "internalType": "struct Pairing.G1Point",
+                                    "name": "c",
+                                    "type": "tuple"
+                                }
+                            ],
+                            "internalType": "struct Verifier.Proof",
+                            "name": "proof",
+                            "type": "tuple"
+                        },
+                        {
+                            "internalType": "uint256[1]",
+                            "name": "input",
+                            "type": "uint256[1]"
+                        }
+                    ],
+                    "name": "verifyTx",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "r",
+                            "type": "bool"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ];
+
         </script>
     </body>
 </html>
+
+
